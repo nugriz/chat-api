@@ -17,15 +17,11 @@ module V1
     private
 
     def message_params
-      params.permit(:name, :done)
+      params.permit(:content).merge(sender: current_user.id)
     end
 
     def set_conversation
       @conversation = Conversation.find(params[:conversation_id])
-    end
-
-    def set_conversation_message
-      @message = @conversation.messages.find_by!(id: params[:id]) if @conversation
     end
   end
 end
