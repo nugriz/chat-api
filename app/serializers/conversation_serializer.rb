@@ -1,4 +1,4 @@
 class ConversationSerializer < ActiveModel::Serializer
   attributes :id, :friend, :user_id
-  has_many :messages
+  has_many :massages
 end

@@ -20,13 +20,13 @@ ActiveRecord::Schema.define(version: 2021_07_22_094200) do
     t.index ["user_id"], name: "index_conversations_on_user_id"
   end
 
-  create_table "messages", force: :cascade do |t|
+  create_table "massages", force: :cascade do |t|
     t.integer "sender"
     t.string "content"
     t.integer "conversation_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["conversation_id"], name: "index_messages_on_conversation_id"
+    t.index ["conversation_id"], name: "index_massages_on_conversation_id"
   end
 
   create_table "users", force: :cascade do |t|

@@ -1,16 +1,15 @@
 class ConversationsController < ApplicationController
-
     # GET /conversations
   def index
-    conversations_from_friends = Conversation.find_by!(friend: current_user.phone) 
+    conversations_from_friends = Conversation.where(friend: current_user.phone) 
     @conversations = current_user.conversations.all
-    @conversations.merge(conversations_from_friends)
+    @conversations =  @conversations + conversations_from_friends
     json_response(@conversations)
   end
 
     # POST /conversations
   def create
-    @conversation = Conversation.create!(conversation_params)
+    @conversation = current_user.conversations.create!(conversation_params)
     json_response(@conversation, :created)
   end
 
