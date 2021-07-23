@@ -4,6 +4,11 @@ class ConversationsController < ApplicationController
     conversations_from_friends = Conversation.where(friend: current_user.phone) 
     @conversations = current_user.conversations.all
     @conversations =  @conversations + conversations_from_friends
+    for conversation in @conversations
+      if conversation.massages.last.present?
+        conversation.last_message = conversation.massages.last.content
+      end
+    end  
     json_response(@conversations)
   end
 
