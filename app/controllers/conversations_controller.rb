@@ -1,13 +1,14 @@
 class ConversationsController < ApplicationController
+  def initialize(last_message = '')
+    @last_message = ''
+  end
     # GET /conversations
   def index
     conversations_from_friends = Conversation.where(friend: current_user.phone) 
     @conversations = current_user.conversations.all
     @conversations =  @conversations + conversations_from_friends
     for conversation in @conversations
-      if conversation.massages.last.present?
-        conversation.last_message = conversation.massages.last.content
-      end
+      conversation.last_and_unread_messages(current_user)
     end  
     json_response(@conversations)
   end
@@ -25,7 +26,7 @@ class ConversationsController < ApplicationController
   end
 
   private
-
+  
   def conversation_params
       # whitelist params
     params.permit(:friend)

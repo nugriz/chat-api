@@ -3,6 +3,11 @@ class MassagesController < ApplicationController
 
     # GET /conversations/:conversation_id/massages
   def index
+    for massage in @conversation.massages
+      if current_user.id != massage.sender 
+        massage.update_attribute(:read,true)
+      end
+    end
     json_response(@conversation.massages)
   end
 
