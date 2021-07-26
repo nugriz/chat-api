@@ -83,7 +83,7 @@ RSpec.configure do |config|
       example.run
     end
   end
-  config.include RequestSpecHelper, type: :request
-  #config.include RequestSpecHelper
+  #config.include RequestSpecHelper, type: :request
+  config.include RequestSpecHelper
   config.include ControllerSpecHelper
 end

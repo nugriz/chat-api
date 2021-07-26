@@ -8,7 +8,18 @@ class ConversationsController < ApplicationController
     @conversations = current_user.conversations.all
     @conversations =  @conversations + conversations_from_friends
     for conversation in @conversations
-      conversation.last_and_unread_messages(current_user)
+      unread = 0
+      if conversation.massages.last.present?
+        conversation.update_attribute(:last_message,conversation.massages.last.content)
+        for massage in conversation.massages
+          if current_user.id != massage.sender 
+            if massage.read == false
+              unread += 1
+            end
+          end
+        end
+      end
+      conversation.update_attribute(:unread,unread)
     end  
     json_response(@conversations)
   end

@@ -4,7 +4,7 @@ require 'rails_helper'
 RSpec.describe 'Conversations API', type: :request do
   # initialize test data
   let!(:user) { create(:user) }
-  let!(:conversations) { create_list(:conversation, 10)}#, user: user.id) }
+  let!(:conversations) { create_list(:conversation, 10, user: user)}#, user: user.id) }
   let(:conversation_id) { conversations.first.id }
   # authorize request
   let(:headers) { valid_headers }
@@ -48,7 +48,7 @@ RSpec.describe 'Conversations API', type: :request do
       end
 
       it 'returns a not found message' do
-        expect(response.body).to match(/Couldn't find conversation/)
+        expect(response.body).to match("{\"message\":\"Couldn't find Conversation with 'id'=100\"}")
       end
     end
   end
@@ -56,10 +56,13 @@ RSpec.describe 'Conversations API', type: :request do
   # Test suite for POST /conversations
   describe 'POST /conversations' do
     # valid payload
-    let(:valid_attributes) { { friend: '08'} }#, created_by: '1' } }
+    let(:valid_attributes) do
+      # send json payload
+      { friend: '08', user: user}.to_json
+    end #{ { friend: '08', user: user} }, created_by: '1' } }
 
     context 'when the request is valid' do
-      before { post '/conversations', params: {}, headers: headers }
+      before { post '/conversations', params: valid_attributes, headers: headers }
 
       it 'creates a conversation' do
         expect(json['friend']).to eq('08')
@@ -80,7 +83,7 @@ RSpec.describe 'Conversations API', type: :request do
 
       it 'returns a validation failure message' do
         expect(response.body)
-          .to match(/Validation failed: Friend by can't be blank/)
+          .to match("{\"message\":\"Validation failed: Friend can't be blank\"}")
       end
     end
   end

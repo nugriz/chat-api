@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_24_010000) do
+ActiveRecord::Schema.define(version: 2021_07_26_000000) do
 
   create_table "conversations", force: :cascade do |t|
     t.string "friend"
@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 2021_07_24_010000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "unread", default: 0
+    t.string "last_message", default: ""
     t.index ["user_id"], name: "index_conversations_on_user_id"
   end
 
